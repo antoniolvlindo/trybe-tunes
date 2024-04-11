@@ -1,6 +1,11 @@
+import { Route, Routes } from 'react-router-dom';
+import Login from './components/Login/Login';
+
 function App() {
   return (
-    <p>Iniciando</p>
+    <Routes>
+      <Route path="/" element={ <Login /> } />
+    </Routes>
   );
 }
 
