@@ -9,7 +9,7 @@ function Login() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    if (userName.length < 3) {
+    if (userName.length <= 3) {
       return;
     }
 
