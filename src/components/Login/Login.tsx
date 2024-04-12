@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createUser } from '../../services/userAPI';
-import { UserType } from '../../types';
+import Loading from '../Loading/Loading';
 
 function Login() {
-  const user = {};
   const [userName, setUserName] = React.useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function isFormValid() {
-    return userName.length >= 3;
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+
+    if (userName.length < 3) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    await createUser({ name: userName });
+
+    setIsLoading(false);
   }
+
   return (
-    <form action="">
+    <form onSubmit={ handleSubmit }>
       <label>
         Login
         <input
@@ -24,11 +35,11 @@ function Login() {
       <button
         type="submit"
         data-testid="login-submit-button"
-        onClick={ () => createUser(user as UserType) }
-        disabled={ !isFormValid() }
+        disabled={ userName.length < 3 || isLoading }
       >
         Entrar
       </button>
+      {isLoading && <Loading />}
     </form>
   );
 }
