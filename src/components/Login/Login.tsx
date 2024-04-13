@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../services/userAPI';
 import Loading from '../Loading/Loading';
 
 function Login() {
   const [userName, setUserName] = React.useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -18,6 +20,8 @@ function Login() {
     await createUser({ name: userName });
 
     setIsLoading(false);
+
+    navigate('/search');
   }
 
   return (
