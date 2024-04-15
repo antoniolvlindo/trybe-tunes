@@ -1,4 +1,8 @@
+import { Key, ReactNode } from 'react';
+
 export type AlbumType = {
+  name: ReactNode;
+  id: Key | null | undefined;
   artistId: number;
   artistName: string;
   collectionId: number;
