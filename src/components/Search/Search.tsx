@@ -1,59 +1,48 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import searchAlbumsAPI from '../../services/searchAlbumsAPI';
 import { AlbumType } from '../../types';
 
 function Search() {
-  const [artistName, setArtistName] = useState('');
-  const [searchedArtist, setSearchedArtist] = useState('');
+  const [artistName, setArtistName] = React.useState('');
   const [searchAlbuns, setSearchAlbuns] = useState<AlbumType[]>([]);
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-
-    if (artistName.length >= 2) {
+  useEffect(() => {
+    async function fetchAlbum() {
       const data = await searchAlbumsAPI(artistName);
       setSearchAlbuns(data);
-      setSearchedArtist(artistName);
-      setArtistName('');
     }
+    fetchAlbum();
+  });
+
+  function isArtistNameValid() {
+    return artistName.length >= 2;
+  }
+
+  function resetArtistName() {
+    setArtistName('');
+  }
+
+  function handleSubmit() {
+    isArtistNameValid();
+    resetArtistName();
   }
 
   return (
-    <div>
-      <form onSubmit={ handleSubmit }>
-        <input
-          type="text"
-          value={ artistName }
-          onChange={ ({ target }) => setArtistName(target.value) }
-          data-testid="search-artist-input"
-        />
-        <button
-          type="submit"
-          disabled={artistName.length < 2}
-          data-testid="search-artist-button"
-        >
-          Pesquisar
-        </button>
-      </form>
-      {
-      searchedArtist
-        && <h2>
-          Resultado de álbuns de:
-          {' '}
-          {searchedArtist}
-        </h2>
-      }
-      {searchAlbuns.length > 0 ? (
-        searchAlbuns.map((album) => (
-          <Link key={ album.id } to={ `/album/${album.id}` }>
-            { album.name }
-          </Link>
-        ))
-      ) : (
-        <p>Nenhum álbum foi encontrado</p>
-      )}
-    </div>
+    <form onSubmit={ handleSubmit }>
+      <input
+        type="text"
+        data-testid="search-artist-input"
+        placeholder="Nome do Artista"
+        name={ artistName }
+        onChange={ ({ target }) => setArtistName(target.value) }
+      />
+      <button
+        data-testid="search-artist-button"
+        disabled={ !isArtistNameValid() }
+      >
+        Procurar
+      </button>
+    </form>
   );
 }
 
