@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import searchAlbumsAPI from '../../services/searchAlbumsAPI';
 import { AlbumType } from '../../types';
 import Loading from '../Loading/Loading';
+import SearchResultHeader from '../SearchResultHeader/SearchResultHeader';
 
 function Search() {
   const [artistName, setArtistName] = useState('');
@@ -33,7 +34,7 @@ function Search() {
             data-testid="search-artist-input"
             type="text"
             value={ artistName }
-            onChange={({ target }) => setArtistName(target.value)}
+            onChange={ ({ target }) => setArtistName(target.value) }
           />
           <button
             data-testid="search-artist-button"
@@ -44,7 +45,9 @@ function Search() {
           </button>
         </form>
       )}
-      {searchedArtist && <h2>Resultado de álbuns de: {searchedArtist}</h2>}
+      {
+        searchedArtist && <SearchResultHeader searchedArtist={ searchedArtist } />
+      }
       {searchAlbuns.length > 0 ? (
         searchAlbuns.map((album) => (
           <Link
