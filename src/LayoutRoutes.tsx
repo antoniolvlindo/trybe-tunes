@@ -8,7 +8,7 @@ function LayoutRoutes() {
   return (
     <Routes>
       <Route path="/" element={ <Layout /> }>
-        <Route path="/" element={ <Search /> } />
+        <Route path="/search" element={ <Search /> } />
         <Route path="/album/:id" element={ <Album /> } />
         <Route path="/*" element={ <NotFound /> } />
       </Route>
