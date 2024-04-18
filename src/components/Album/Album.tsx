@@ -29,10 +29,12 @@ function Album() {
     <div>
       <h1 data-testid="album-name">
         Álbum
+        <br />
         { (album as any)?.collectionName }
       </h1>
       <p data-testid="artist-name">
         Artista:
+        {' '}
         { (album as any)?.artistName }
       </p>
       <ul>
@@ -41,6 +43,7 @@ function Album() {
             key={ index }
             trackName={ music.trackName }
             previewUrl={ music.previewUrl }
+            trackId={ music.trackId }
           />
         ))}
       </ul>
