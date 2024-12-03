@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../../services/userAPI';
 import Loading from '../Loading/Loading';
+import './Login.css';
 
 function Login() {
-  const [userName, setUserName] = React.useState<string>('');
+  const [userName, setUserName] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -20,31 +21,25 @@ function Login() {
     await createUser({ name: userName });
 
     setIsLoading(false);
-
-    navigate('/search');
+    navigate('/dashboard');
   }
 
   return (
-    <form onSubmit={ handleSubmit }>
-      <label>
-        Login
+    <div className="login-container">
+      <h1>Login</h1>
+      <form onSubmit={ handleSubmit }>
         <input
           type="text"
-          placeholder="Username"
-          data-testid="login-name-input"
+          placeholder="Nome de usuário"
           value={ userName }
-          onChange={ ({ target }) => setUserName(target.value) }
+          onChange={ (e) => setUserName(e.target.value) }
         />
-      </label>
-      <button
-        type="submit"
-        data-testid="login-submit-button"
-        disabled={ userName.length < 3 || isLoading }
-      >
-        Entrar
-      </button>
+        <button type="submit" disabled={ isLoading || userName.length <= 3 }>
+          {isLoading ? 'Carregando...' : 'Entrar'}
+        </button>
+      </form>
       {isLoading && <Loading />}
-    </form>
+    </div>
   );
 }
 
